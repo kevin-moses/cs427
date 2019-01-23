@@ -1,0 +1,11 @@
+ESTIMATE of time to complete assignment: 10 hours
+
+      Time   	Time
+Date  started	spent 	Work completed
+----  -------  	---- 	 --------------
+12/7  8:00pm  	2:00  	Read spec, wrote file input/getline, worked on distance formula, starting testing, passing 1-5
+               	----
+              	2:00  TOTAL time spent
+
+            I discussed this assignment with: No One
+
