@@ -9,3 +9,4 @@ Date  started	spent 	Work completed
 
             I discussed this assignment with: No One
 
+Major Difficulties: Getting my head around parsing input by line was the most time-consuming part of the project. I wasn't sure whether I wanted to use cin, getline, sscanf, etc. so I looked around for online C++ documentation to show the best way of parsing multiple doubles from a single line. In the end I ended up using getline, so I could parse values line by line, and used sstream to make the conversion to doubles much easier. This process is so much easier in C++ compared to C. I also did not at first initialize my doubles to 0.0, so when I parsed them as 0 from the file, the value would end up being 1*10^-314 or some crazy small number, but I wanted exactly zero. The formula to calculate total distance from colatitudes and distancces seemed pretty intuitive but I just had to make sure to get the values of degrees as radians so the calculation would work out. 

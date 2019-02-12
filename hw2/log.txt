@@ -1,0 +1,15 @@
+ time to complete assignment: 5 hours
+
+      Time   	  Time
+Date  started 	spent 	Work completed
+----  -------  	---- 	 --------------
+2/1   6:00pm  	1:00  	Read spec, wrote hpp and spinout.cpp preliminary files
+2/2	  1:00pm	2:30	 Worked on interactive and noninteractive modes, starting testing
+2/3   7:00pm    0:30    Went to office hours to talk with Omar about throwing exceptions
+2/6	  1:00am	0:15	Finished basic exception handling
+              ----
+              	3:30  TOTAL time spent
+
+            I discussed this assignment with: David Schwartz, ULA (Omar)
+
+Major Difficulties: The hardest thing was handling exceptions and what to define as a graceful exit. I didn't fully understand the syntax in C++ of when to "throw" an exception versus when to "catch" one, and what to do when you catch one. I went to office hours to talk to Omar about this, and he explained that things like invalid argument or out of range are just classes of the exception object - i totally was unaware that exceptions themselves were objects! I implemented throwing exceptions in my object member functions, and seemed to pass all public tests. It might be hard to cover every single exception but I think i nailed down what could be going wrong.

@@ -1,0 +1,132 @@
+
+Final test script for Distance (02/06/2019)
+
+***** Checking for warning messages *****
+Making -B ./Distance
+g++ -Wall -pedantic -std=c++17   -c -o distance.o distance.cpp
+g++ -Wall -pedantic -std=c++17   -c -o geometry.o geometry.cpp
+g++ -Wall -pedantic -std=c++17 -o Distance distance.o geometry.o
+
+Each test is either passed or failed; there is no partial credit.
+
+
+           Valid positive input
+  1 point  001. all inputs DD.dddd (ARN-PEK)
+  1 point  002. all inputs DD MM.mmmm (ARN-PEK)
+  1 point  003. all inputs DD MM SS.ssss (ARN - PEK)
+
+           Valid positive input: 70 points
+
+           Valid negative input
+  1 point  004. negative lat1 (DD MM SS.ssss) (SYD - PEK)
+  1 point  005. negative lon1 (DD MM SS.ssss) (SFO - PEK)
+  1 point  006. negative lat2 (DD MM SS.ssss) (PEK - SYD)
+  1 point  007. negative lon2 (DD MM SS.ssss) (PEK - SFO)
+
+           Valid negative input: 10 points
+
+           Small negative values
+  1 point  008. -0.ddddd 1st line
+1c1
+< 6884.51
+---
+> 6884.26
+Error: STDOUT differs from expected
+  0 point  009. -0 MM 1st line
+1c1
+< 5501.45
+---
+> 5501.33
+Error: STDOUT differs from expected
+  0 point  010. -0 MM 2nd line
+1c1
+< 6935.18
+---
+> 6934.93
+Error: STDOUT differs from expected
+  0 point  011. -0 MM 3rd line
+1c1
+< 5554.42
+---
+> 5554.31
+Error: STDOUT differs from expected
+  0 point  012. -0 MM 4th line
+1c1
+< 6884.36
+---
+> 6884.06
+Error: STDOUT differs from expected
+  0 point  013. -0 MM SS.sss 1st line
+1c1
+< 5502.19
+---
+> 5502.06
+Error: STDOUT differs from expected
+  0 point  014. -0 MM SS.sss 2nd line
+1c1
+< 6935.38
+---
+> 6935.08
+Error: STDOUT differs from expected
+  0 point  015. -0 MM SS.sss 3rd line
+1c1
+< 5553.7
+---
+> 5553.58
+Error: STDOUT differs from expected
+  0 point  016. -0 MM SS.sss 4th line
+
+           Small negative values: 0 points
+
+           Improper format -- test for graceful exit
+  1 point  017. empty input
+  1 point  018. one line
+  1 point  019. two lines
+  1 point  020. three lines
+  1 point  021. five lines
+  1 point  022. four lines, 1st is empty
+  1 point  023. four lines, 2nd starts with letter
+  1 point  024. four lines, 2nd token on 3rd line starts with letter
+  1 point  025. four lines, 3rd token 4th line starts with letter
+  1 point  026. four lines, all have extra number at end
+  1 point  027. four lines, all have extra letter at end
+  1 point  028. degrees out of range on 1st
+  1 point  029. degrees out of range on 2nd
+  1 point  030. degrees out of range on 3rd
+  1 point  031. degrees out of range on 4th
+  1 point  032. minutes out of range on 1st
+  1 point  033. minutes out of range on 2nd
+  1 point  034. minutes out of range on 3rd
+  1 point  035. minutes out of range on 4th
+  1 point  036. seconds out of range on 1st
+  1 point  037. seconds out of range on 2nd
+  1 point  038. seconds out of range on 3rd
+  1 point  039. seconds out of range on 4th
+  1 point  040. DD.dddd MM SS on 1st
+  1 point  041. DD.dddd MM SS on 2nd
+  1 point  042. DD.dddd MM SS on 3rd
+  1 point  043. DD.dddd MM SS on 4th
+  1 point  044. DD MM.mmmm SS on 1st
+  1 point  045. DD MM.mmmm SS on 2nd
+  1 point  046. DD MM.mmmm SS on 3rd
+  1 point  047. DD MM.mmmm SS on 4th
+  1 point  048. extra whitespace
+
+           Improper format -- test for graceful exit: 15 points
+
+               Deductions for Violating Specification (0 => no violation)
+
+End of Public Script
+
+ 95 points Total for Distance
+
+           Possible Deductions (assessed later as appropriate)
+                -5 Does not make
+                -5 Makefile missing
+                -5 Makefile incorrect
+                -1 Log file incorrectly named
+                -1 Log file lacks estimated time
+                -1 Log file lacks total time
+                -1 Log file lacks statement of major difficulties
+                -1 Compilation errors using -Wall -std=c++17 -pedantic
+

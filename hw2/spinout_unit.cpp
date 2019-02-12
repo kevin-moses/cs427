@@ -32,7 +32,7 @@ int main(int argc, char **argv)
     }
 
   auto game = SpinOut{};
-  
+
   switch (test)
     {
     case 0:
@@ -50,7 +50,7 @@ int main(int argc, char **argv)
     case 3:
       testLegalMove(game, 5);
       break;
-      
+
     case 4:
       testLegalMove(game, 6);
       break;
@@ -65,7 +65,7 @@ int main(int argc, char **argv)
     case 6:
       testIllegalPosition(game, 7);
       break;
-      
+
     default:
       cout << argv[0] << ": invalid test number " << argv[1] << endl;
     }
