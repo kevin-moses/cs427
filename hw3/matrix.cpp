@@ -1,17 +1,21 @@
-#include "matrix.hpp"
 #include <iostream>
-
-namespace cs427_527 {
-
-		/*
-		A constructor Matrix(int h, int w) that creates a matrix of the given size. That size is then fixed for the life of the matrix.
-		*/
+using std::cout;
+using std::endl;
+namespace cs427527 {
+    /*
+    A constructor Matrix(int h, int w) that creates a matrix of the given size. That size is then fixed for the life of the matrix.
+    */
 		template<typename T>
-    Matrix<T>::Matrix(int h, int w) {
-      this.capacity = h*w;
-      this.width = w;
-      this.height = h;
-      elements = (T*)(::operator new(capacity*sizeof(T)));
+    Matrix<T>::Matrix(int height, int width) {
+      capacity = height*width;
+      w = width;
+      h = height;
+      // elements = new T[capacity]{};
+      elements = (T*)::operator new(sizeof(T)*capacity);
+      for (int i = 0; i < capacity; i++) {
+        (elements[i]) = T{};
+      }
+      // elements{};
     }
     /*
   	A copy constructor Matrix(const Matrix& other) that creates a deep copy of the given matrix, assuming that the elements' copy constructor and assignment operator create deep copies of the elements.
@@ -36,6 +40,7 @@ namespace cs427_527 {
         deallocate();
         copy(rhs);
       }
+
       return *this;
     }
     /*
@@ -54,24 +59,24 @@ namespace cs427_527 {
 		*/
 		template<typename T>
     int Matrix<T>::height() const {
-      return height;
+      return h;
     }
     template<typename T>
     int Matrix<T>::width() const {
-      return width;
+      return w;
     }
     /*
     A method T& at(int r, int c) that returns a reference to the element at the given location in the matrix, or throws a std::out_of_range exception if the row index or column index are invalid. There must also be a version of this method that works on const matrices, returning const references to the elements.
     */
     template<typename T>
     T& Matrix<T>::at(int r, int c) {
-      int index = (r-1)*width + (c-1);
-      return *elements[index];
+      int index = (r*w) + (c);  
+      return elements[index];
     }
     template<typename T>
     T& Matrix<T>::at(const int r, const int c) const {
-      int index = (r-1)*width + (c-1);
-      return *elements[index];
+      int index = (r)*w + (c);
+      return elements[index];
     }
 
     /*
@@ -94,7 +99,7 @@ namespace cs427_527 {
     template<typename T>
     void Matrix<T>::deallocate() {
       // call destructor manually
-      for (int i = 0; i < this.capacity; i++) {
+      for (int i = 0; i < capacity; i++) {
         elements[i].~T();
       }
       // global delete to free space to match allocation with global new
@@ -105,7 +110,7 @@ namespace cs427_527 {
     Move constructor --reroutes pointers
     */
     template<typename T>
-    void Vector<T>::move(Vector& toMove) {
+    void Matrix<T>::move(Matrix& toMove) {
       // switch pointers
       capacity = toMove.capacity;
       elements = toMove.elements;
@@ -114,5 +119,12 @@ namespace cs427_527 {
       toMove.elements = nullptr;
     }
 
-
+    /*
+    Matrix Destructor method which deallocates space 
+    */
+    template<typename T>
+    Matrix<T>::~Matrix() {
+      deallocate();
+    }
+    
 }

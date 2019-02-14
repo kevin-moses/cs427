@@ -152,14 +152,14 @@ void testMatrix() {
     small.at(1, 1) = 1;
     cout << "2x2 IDENTITY MATRIX" << endl;
     for (int r = 0; r < 2; r++)
-      {
-	for (int c = 0; c < 2; c++)
-	  {
-	    cout << small.at(r, c) << " ";
-	  }
-	cout << endl;
-      }
-#else
+        {
+  	for (int c = 0; c < 2; c++)
+  	  {
+  	    cout << small.at(r, c) << " ";
+  	  }
+  	cout << endl;
+        }
+  #else
     cout << "matrix not implemented (try compiling with the symbol MATRIX defined" << endl;
 #endif
 }
@@ -254,7 +254,7 @@ void testSlice1() {
 void testSlice2() {
 #ifdef SLICE
     auto m = makeMatrix(3, 4);
-    m.at(1, 3) = 33; 
+    m.at(1, 3) = 20; 
     
     auto middle = m[1];
     cout << "middle row, last column: " << middle[3] << endl;
