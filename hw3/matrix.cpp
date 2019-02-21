@@ -2,6 +2,79 @@
 using std::cout;
 using std::endl;
 namespace cs427527 {
+
+    /*
+    an operator slice operator[](int row) that takes a row index and returns a slice representing that row, or throws a std::out_of_range exception if the index is invalid;
+    */
+    template<typename T>
+    typename Matrix<T>::slice Matrix<T>::operator[](int row)
+    {
+      if (row > this->w || row < 0) {
+        throw std::out_of_range ("out_of_range");
+      }
+      int start = this->w * row;
+      int end = (this->w+1) * row;
+      return SkipView{*this, start, 1, end};
+    }
+    template<typename T>
+    typename Matrix<T>::const_slice Matrix<T>::operator[](int row) const
+    {
+      if (row > this->w || row < 0) {
+        throw std::out_of_range ("out_of_range");
+      }
+      int start = this->w * row;
+      int end = (this->w + 1) * row;
+      return ConstSkipView{*this, start, 1, end};
+    }
+
+    /*
+    a method slice column(int col) that takes a column index and returns a slice representing that column, or throws a std::out_of_range exception if the index is invalid; and
+    */
+    template<typename T>
+    typename Matrix<T>::slice Matrix<T>::column(int col) {
+      if (col > this->w || col < 0) {
+        throw std::out_of_range ("out_of_range");
+      }
+      int step = this.w;
+      int end = col + (this->w * (this->h-1));
+      return SkipView{*this, col, step, end};
+    }
+    template<typename T>
+    typename Matrix<T>::const_slice Matrix<T>::column(int col) const {
+      if (col > this->w || col < 0) {
+        throw std::out_of_range ("out_of_range");
+      }
+      int step = this->w;
+      int end = col + (this->w * (this->h-1));
+      return ConstSkipView{*this, col, step, end};
+    }
+
+
+    /*
+    an operator T& operator[](int i) that takes an index into the slice and returns a reference to the element at that index, or throws a std::out_of_range exception if the index is invalid;
+    */
+    template<typename T>
+    T& Matrix<T>::SkipView::operator[](int i) {
+      if (i > last ) {
+        throw std::out_of_range ("out of range");
+      }
+      return target[start + skip + i];
+    }
+    template<typename T>
+    const T& Matrix<T>::SkipView::operator[](int i) const {
+      if (i > last ) {
+        throw std::out_of_range ("out of range");
+      }
+      return target[start + skip + i];
+    }
+    template<typename T>
+    const T& Matrix<T>::ConstSkipView::operator[](int i) const {
+      if (i > last ) {
+        throw std::out_of_range ("out of range");
+      }
+      return target[start + skip + i];
+    }
+
     /*
     A constructor Matrix(int h, int w) that creates a matrix of the given size. That size is then fixed for the life of the matrix.
     */
@@ -15,7 +88,6 @@ namespace cs427527 {
       for (int i = 0; i < capacity; i++) {
         (elements[i]) = T{};
       }
-      // elements{};
     }
     /*
   	A copy constructor Matrix(const Matrix& other) that creates a deep copy of the given matrix, assuming that the elements' copy constructor and assignment operator create deep copies of the elements.
@@ -70,11 +142,17 @@ namespace cs427527 {
     */
     template<typename T>
     T& Matrix<T>::at(int r, int c) {
-      int index = (r*w) + (c);  
+      if (r > h || c > w) {
+        throw std::out_of_range ("index wrong");
+      }
+      int index = (r*w) + (c);
       return elements[index];
     }
     template<typename T>
     T& Matrix<T>::at(const int r, const int c) const {
+      if (r > h || c > w) {
+        throw std::out_of_range ("index wrong");
+      }
       int index = (r)*w + (c);
       return elements[index];
     }
@@ -85,13 +163,30 @@ namespace cs427527 {
     template<typename T>
     void Matrix<T>::copy(const Matrix& toCopy) {
       capacity = toCopy.capacity;
-
+			w = toCopy.w;
+			h = toCopy.h;
       // alloc uninitialized space with global new
       elements = (T*)::operator new(capacity*sizeof(T));
       for (int i = 0; i < capacity; i++) {
         new (elements + i) T{toCopy.elements[i]};
       }
     }
+		/*
+		Move constructor --reroutes pointers
+		*/
+		template<typename T>
+		void Matrix<T>::move(Matrix& toMove) {
+			// switch pointers
+			capacity = toMove.capacity;
+			elements = toMove.elements;
+			w = toMove.w;
+			h = toMove.h;
+			// set other pointers null
+			toMove.capacity = 0;
+			toMove.w = 0;
+			toMove.h = 0;
+			toMove.elements = nullptr;
+		}
 
     /*
     Deallocate memory from 'this'
@@ -106,25 +201,13 @@ namespace cs427527 {
       ::operator delete(elements);
     }
 
-    /*
-    Move constructor --reroutes pointers
-    */
-    template<typename T>
-    void Matrix<T>::move(Matrix& toMove) {
-      // switch pointers
-      capacity = toMove.capacity;
-      elements = toMove.elements;
-      // set other pointers null
-      toMove.capacity = 0;
-      toMove.elements = nullptr;
-    }
 
     /*
-    Matrix Destructor method which deallocates space 
+    Matrix Destructor method which deallocates space
     */
     template<typename T>
     Matrix<T>::~Matrix() {
       deallocate();
     }
-    
+
 }

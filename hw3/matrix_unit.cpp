@@ -70,7 +70,7 @@ int main(int argc, char **argv)
       return 1;
     }
 
-  
+
   switch (test)
     {
     case 0:
@@ -84,27 +84,27 @@ int main(int argc, char **argv)
     case 2:
       testCopyMatrix1();
       break;
-    
+
     case 3:
       testCopyMatrix2();
       break;
-   
+
     case 4:
       testCopyMatrix3();
       break;
-   
+
     case 5:
       testSlice1();
       break;
-    
+
     case 6:
       testSlice2();
       break;
-   
+
     case 7:
       testSlice3();
       break;
-   
+
     case 8:
       testSlice4();
       break;
@@ -112,11 +112,11 @@ int main(int argc, char **argv)
     case 9:
       testIterator1();
       break;
-   
+
     case 10:
       testIterator2();
       break;
-   
+
     case 11:
       testIterator3();
       break;
@@ -128,7 +128,7 @@ int main(int argc, char **argv)
     case 13:
       testIterator4();
       break;
-   
+
     case 14:
       testIterator5();
       break;
@@ -136,7 +136,7 @@ int main(int argc, char **argv)
     case 15:
       testFinal();
       break;
-      
+
     default:
       cout << argv[0] << ": invalid test number " << argv[1] << endl;
     }
@@ -191,7 +191,7 @@ void printMatrix(const Matrix<int>& m)
     cout << "matrix not implemented (try compiling with the symbol MATRIX defined" << endl;
 #endif
 }
-    
+
 void testCopyMatrix1() {
 #ifdef MATRIXCOPY
     Matrix<int> m{3,4};
@@ -254,8 +254,8 @@ void testSlice1() {
 void testSlice2() {
 #ifdef SLICE
     auto m = makeMatrix(3, 4);
-    m.at(1, 3) = 20; 
-    
+    m.at(1, 3) = 20;
+
     auto middle = m[1];
     cout << "middle row, last column: " << middle[3] << endl;
 #else
@@ -295,7 +295,7 @@ Matrix<int> makeMatrix(int h, int w)
 {
 #ifdef SLICE
   Matrix<int> m{h, w};
-  
+
   for (int r = 0; r < h; r++)
     {
       for (int c = 0; c < w; c++)
@@ -348,7 +348,7 @@ void testIterator1() {
 
     m[0][0] = 99;
     m[1][1] = 98;
-  
+
     cout << "ORIGINAL WITH ITERATORS" << endl;
     printMatrixIterators(m);
 #else
@@ -400,7 +400,7 @@ void testIterator3_const(){
 void testIterator4() {
 #ifdef ALL
     auto m = makeMatrix(3, 4);
-  
+
     cout << "SUM OF ENTIRE ORIGINAL" << endl
        << sumMatrix(m) << endl;
 #else
@@ -420,12 +420,12 @@ void testIterator5() {
 
     copy[0][0] = 99;
     copy[1][1] = 98;
-  
+
     for (auto i = copy.column(copy.width() - 1).begin(); i != copy.column(copy.width() - 1).end(); ++i)
     {
       *i = 42;
     }
-  
+
     cout << "ITERATOR COMPARISONS" << endl;
     testCompareIterators(m, m, m);
 #else
@@ -455,17 +455,17 @@ void testCompareIterators(Matrix<int>& m1, const Matrix<int>& m2, Matrix<int> m3
   // add messages here indicating what is being compared
   cout << "begin == begin: "
        << (m1[0].begin() == m1[0].begin()) << endl; // true
-  
+
 #ifdef CPSC527
   cout << "iterator == const iterator: "
        << (m1[0].begin() == m2[0].begin()) << endl; // true
 #else
   cout << "iterator == const iterator: 1" << endl;
 #endif
-  
+
   cout << "same position, different matrices: "
        << (m1[0].begin() == m3[0].begin()) << endl; // false
-  
+
   cout << "same position through row and column: "
        << (m1[0].begin() == m1.column(0).begin()) << endl; // true
 #else

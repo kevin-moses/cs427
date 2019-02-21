@@ -10,6 +10,7 @@
 
 namespace cs427_527
 {
+
   /**
    * An iterable random-access container.
    *
@@ -36,7 +37,7 @@ namespace cs427_527
        */
       SkippingIterator(Vector<T>& t, int i, int st) : target{t}
       { curr = i; step = st; }
-  
+
       /**
        * Returns a reference to the element this iterator is positioned at.
        *
@@ -61,7 +62,7 @@ namespace cs427_527
        */
       bool operator==(const SkippingIterator& rhs) const
       { return &target == &(rhs.target) && curr == rhs.curr; }
-  
+
       /**
        * Determines if this iterator is positioned at the same
        * element in the same container as the given iterator.
@@ -72,7 +73,7 @@ namespace cs427_527
        */
       bool operator!=(const SkippingIterator& rhs) const
       { return !(*this == rhs); }
-  
+
     private:
       /**
        * The container this iterator iterates through.
@@ -107,14 +108,14 @@ namespace cs427_527
        */
       ConstSkippingIterator(const Vector<T>& t, int i, int st) : target{t}
       { curr = i; step = st; }
-  
+
       /**
        * Returns a reference to the element this iterator is positioned at.
        *
        * @return a reference to the element this iterator is positioned at
        */
       const T& operator *() const { return target[curr]; }
-  
+
       /**
        * Advances this iterator.
        *
@@ -141,13 +142,13 @@ namespace cs427_527
        * same element in the same container as rhs
        */
       bool operator!=(const ConstSkippingIterator& rhs) const { return !(*this == rhs); }
-  
+
     private:
       /**
        * The container this iterator iterates through.
        */
       const Vector<T>& target;
-      
+
       /**
        * The current index of this iterator in target.
        */
@@ -158,7 +159,7 @@ namespace cs427_527
        */
       int step;
     };
-      
+
     using iterator = SkippingIterator;
     using const_iterator = ConstSkippingIterator;
 
@@ -185,14 +186,14 @@ namespace cs427_527
        * @return an iterator positioned at the beginning of this view
        */
       iterator begin() { return SkippingIterator{target, start, 2}; }
-  
+
       /**
        * Returns an iterator positioned at the end of this view.
        *
        * @return an iterator positioned at the end of this view
        */
       iterator end() { return SkippingIterator{target, target.size() + (start % 2 != target.size() % 2 ? 1 : 0), 2}; }
-  
+
       /**
        * Returns a read-only iterator positioned at the beginning of this view.
        *
@@ -200,7 +201,7 @@ namespace cs427_527
        */
       const_iterator begin() const
       { return ConstSkippingIterator{target, start, 2}; }
-  
+
       /**
        * Returns a read-only iterator positioned at the end of this view.
        *
@@ -216,7 +217,7 @@ namespace cs427_527
        * @return a reference to that element
        */
       T& operator[](int i);
-  
+
       /**
        * Returns a reference to the given element in this view.
        *
@@ -224,7 +225,7 @@ namespace cs427_527
        * @return a reference to that element
        */
       const T& operator[](int i) const;
-      
+
     private:
       /**
        * The container this view sees.
@@ -254,7 +255,7 @@ namespace cs427_527
        */
       ConstSkipView(const Vector<T>& t, int start) : target(t)
       { this->start = start; }
-  
+
       /**
        * Returns a read-only iterator positioned at the beginning of this view.
        *
@@ -262,7 +263,7 @@ namespace cs427_527
        */
       const_iterator begin() const
       { return ConstSkippingIterator{target, start, 2}; }
-  
+
       /**
        * Returns a read-only iterator positioned at the end of this view.
        *
@@ -270,7 +271,7 @@ namespace cs427_527
        */
       const_iterator end() const
       { return ConstSkippingIterator{target, target.size() + (start % 2 != target.size() % 2 ? 1 : 0), 2}; }
-      
+
       /**
        * Returns a reference to the given element in this view.
        *
@@ -344,7 +345,7 @@ namespace cs427_527
      * @return a reference to that element
      */
     T& operator[](int i);
-      
+
     /**
      * Returns a reference to the element at the given index in this vector.
      *
@@ -352,7 +353,7 @@ namespace cs427_527
      * @return a reference to that element
      */
     const T& operator[](int i) const;
-      
+
     /**
      * Returns the number of elements in this vector.
      *
@@ -436,17 +437,17 @@ namespace cs427_527
 
   private:
     void deallocate();
-      
+
     void copy(const Vector& toCopy);
-      
+
     void move(Vector& toMove);
-      
+
     void embiggen();
-      
+
     int capacity;
     int count;
     T* elements;
-      
+
     const int INITIAL_CAPACITY = 2;
   };
 
@@ -464,4 +465,4 @@ namespace cs427_527
 
 #include "vector.cpp"
 
-#endif    
+#endif
