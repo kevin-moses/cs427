@@ -18,18 +18,18 @@ namespace cs427527 {
       T& operator *() const {
         return target[curr];
       }
-      // SkippingIterator& operator=(const SkippingIterator rhs) {
-      //   copy(rhs);
-      // }
-      // void copy(const SkippingIterator& toCopy) {
-      //   target = toCopy.target;
-      //   step = toCopy.step;
-      //   curr = toCopy.curr;
-      // }
       // an operator iterator& operator++() to advance an iterator and return a reference to it, provided that it is not already positioned past the last element in the slice;
       SkippingIterator& operator++() {
         curr+=step;
         return *this;
+      }
+      SkippingIterator& operator=(const SkippingIterator rhs) {
+        copy(rhs);
+      }
+      void copy(const SkippingIterator& toCopy) {
+        target = toCopy.target;
+        step = toCopy.step;
+        curr = toCopy.curr;
       }
       // operators bool operator==(const iterator& rhs) and bool operator!=(const iterator& rhs) to compare two iterators to check whether they are positioned at the same element in the same matrix or both positioned past the last element in the same slice (both iterators must be the same type – both iterators or both const_iterators – but see below for graduate credit requirements);
       bool operator==(const SkippingIterator& rhs) const {
@@ -39,6 +39,7 @@ namespace cs427527 {
         return !(*this==rhs);
       }
     private:
+      // pointer to 1d matrix array, current iterator and skip value
       T* target;
       int curr;
       int step;
@@ -49,7 +50,14 @@ namespace cs427527 {
       {
         curr = i;
         step = st;
-
+      }
+      ConstSkippingIterator& operator=(const ConstSkippingIterator rhs) const {
+        copy(rhs);
+      }
+      void copy(const ConstSkippingIterator& toCopy) {
+        target = toCopy.target;
+        step = toCopy.step;
+        curr = toCopy.curr;
       }
 
       const T& operator *() const {
@@ -108,7 +116,7 @@ namespace cs427527 {
       */
 
     private:
-
+      // pointer to 1d array, start value, end value, amount to skip by to get from start to end, and length of the slice
       T* target;
       int start;
       int skip;
@@ -206,6 +214,7 @@ namespace cs427527 {
     ~Matrix();
 
   private:
+    // 1d dynamically allocated array of elements, capacity (width*height), move constructor, copy constructor, deconstructor
     T *elements;
     int capacity = 0;
     int w = 0;

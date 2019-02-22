@@ -10,7 +10,7 @@ namespace cs427527 {
     typename Matrix<T>::slice Matrix<T>::operator[](int row)
     {
       if (row > this->w || row < 0) {
-        throw std::out_of_range ("df");
+        throw std::out_of_range ("out of range");
       }
       int start = this->w * row;
       int end = (this->w) * (row+1);
@@ -20,7 +20,7 @@ namespace cs427527 {
     typename Matrix<T>::const_slice Matrix<T>::operator[](int row) const
     {
       if (row > this->w || row < 0) {
-        throw std::out_of_range ("sf");
+        throw std::out_of_range ("out of range");
       }
       int start = this->w * row;
       int end = (this->w) * (row+1);
@@ -33,7 +33,7 @@ namespace cs427527 {
     template<typename T>
     typename Matrix<T>::slice Matrix<T>::column(int col) {
       if (col > this->w || col < 0) {
-        throw std::out_of_range ("af");
+        throw std::out_of_range ("out of range");
       }
       int step = this->w;
       int end = col + (this->w * (this->h));
@@ -42,7 +42,7 @@ namespace cs427527 {
     template<typename T>
     typename Matrix<T>::const_slice Matrix<T>::column(int col) const {
       if (col > this->w || col < 0) {
-        throw std::out_of_range ("we");
+        throw std::out_of_range ("out of range");
       }
       int step = this->w;
       int end = col + (this->w * (this->h));
@@ -55,22 +55,22 @@ namespace cs427527 {
     */
     template<typename T>
     T& Matrix<T>::SkipView::operator[](int i) {
-      if (i > length ) {
-        throw std::out_of_range ("out of fe");
+      if (i > length || i < 0) {
+        throw std::out_of_range ("out of range");
       }
       return target[start + (skip*i)];
     }
     template<typename T>
     const T& Matrix<T>::SkipView::operator[](int i) const {
-      if (i > length ) {
-        throw std::out_of_range ("out we range");
+      if (i > length || i < 0 ) {
+        throw std::out_of_range ("out of range");
       }
       return target[start + (skip*i)];
     }
     template<typename T>
     const T& Matrix<T>::ConstSkipView::operator[](int i) const {
-      if (i > length ) {
-        throw std::out_of_range ("as of range");
+      if (i > length  || i < 0 ) {
+        throw std::out_of_range ("out of range");
       }
       return target[start + (skip *i)];
     }
@@ -145,7 +145,10 @@ namespace cs427527 {
     template<typename T>
     T& Matrix<T>::at(int r, int c) {
       if (r > h || c > w) {
-        throw std::out_of_range ("index wrong");
+        throw std::out_of_range ("out of range");
+      }
+      if (r < 0 || c < 0) {
+        throw std::out_of_range ("out of range");
       }
       int index = (r*w) + (c);
       return elements[index];
@@ -153,7 +156,10 @@ namespace cs427527 {
     template<typename T>
     T& Matrix<T>::at(const int r, const int c) const {
       if (r > h || c > w) {
-        throw std::out_of_range ("index wrong");
+        throw std::out_of_range ("out of range");
+      }
+      if (r < 0 || c < 0) {
+        throw std::out_of_range ("out of range");
       }
       int index = (r)*w + (c);
       return elements[index];
@@ -162,7 +168,6 @@ namespace cs427527 {
     /*
     Copy constructor -- creating a deep copy
     */
-
     template<typename T>
     void Matrix<T>::copy(const Matrix& toCopy) {
       capacity = toCopy.capacity;
