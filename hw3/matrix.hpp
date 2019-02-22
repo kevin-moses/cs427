@@ -1,7 +1,7 @@
 #ifndef __CS427527_MATRIX_HPP__
 #define __CS427527_MATRIX_HPP___
 #include <iostream>
-#define SLICE
+#define FINAL
 
 namespace cs427527 {
   template <typename T>
@@ -10,7 +10,7 @@ namespace cs427527 {
     class SkippingIterator {
     public:
       // * Creates an iterator in the given container starting at the given index and advancing the given number of elements per increment.
-      SkippingIterator(Matrix<T> t, int i, int st): target{t}{
+      SkippingIterator(T* t, int i, int st): target{t}{
         curr = i;
         step = st;
       }
@@ -18,6 +18,14 @@ namespace cs427527 {
       T& operator *() const {
         return target[curr];
       }
+      // SkippingIterator& operator=(const SkippingIterator rhs) {
+      //   copy(rhs);
+      // }
+      // void copy(const SkippingIterator& toCopy) {
+      //   target = toCopy.target;
+      //   step = toCopy.step;
+      //   curr = toCopy.curr;
+      // }
       // an operator iterator& operator++() to advance an iterator and return a reference to it, provided that it is not already positioned past the last element in the slice;
       SkippingIterator& operator++() {
         curr+=step;
@@ -25,38 +33,43 @@ namespace cs427527 {
       }
       // operators bool operator==(const iterator& rhs) and bool operator!=(const iterator& rhs) to compare two iterators to check whether they are positioned at the same element in the same matrix or both positioned past the last element in the same slice (both iterators must be the same type – both iterators or both const_iterators – but see below for graduate credit requirements);
       bool operator==(const SkippingIterator& rhs) const {
-        return &target == &(rhs.target) && curr == rhs.curr;
+        return (target == (rhs.target) && (curr == rhs.curr));
       }
       bool operator!=(const SkippingIterator& rhs) const {
         return !(*this==rhs);
       }
     private:
-      Matrix<T>& target;
+      T* target;
       int curr;
       int step;
     };
     class ConstSkippingIterator {
     public:
-      ConstSkippingIterator(const Matrix<T>& t, int i, int st) : target{t}
-      { curr = i; step = st; }
+      ConstSkippingIterator(const T* t, int i, int st) : target{t}
+      {
+        curr = i;
+        step = st;
+
+      }
 
       const T& operator *() const {
         return target[curr];
       }
 
       ConstSkippingIterator& operator++() {
-        curr+=step;
+
+        this->curr += step;
         return *this;
       }
 
       bool operator==(const ConstSkippingIterator& rhs) const {
-        return &target == &(rhs.target) && curr == rhs.curr;
+        return (target == (rhs.target)) && (curr == rhs.curr);
       }
       bool operator!=(const ConstSkippingIterator& rhs) const {
         return !(*this == rhs);
       }
     private:
-      const Matrix<T> target;
+      const T* target;
       int curr;
       int step;
     };
@@ -66,10 +79,11 @@ namespace cs427527 {
 
     class SkipView {
     public:
-      SkipView(Matrix<T> t, int start, int skip, int l) : target(t) {
+      SkipView(T *t, int start, int skip, int l, int length) : target(t) {
         this->start = start;
         this->skip = skip;
         this->last = l;
+        this->length = length;
       }
       /*
       an operator T& operator[](int i) that takes an index into the slice and returns a reference to the element at that index, or throws a std::out_of_range exception if the index is invalid;
@@ -79,29 +93,35 @@ namespace cs427527 {
       /*
       a method iterator begin() to return an iterator positioned at the beginning of the slice;
       */
-      iterator begin() { return SkippingIterator{target,start, skip}; }
-      const_iterator begin() const { return ConstSkippingIterator{target, last, skip};} 
+      iterator begin() { return SkippingIterator{target, start, skip}; }
+      const_iterator begin() const { return ConstSkippingIterator{target, start, skip};}
        /*
       a method iterator end() to return an iterator positioned past the last element in the slice;
       */
-      iterator end() { return SkippingIterator{target,start, skip}; }
-      const_iterator end() const { return ConstSkippingIterator{target, last, skip};} 
+      iterator end() { return SkippingIterator{target, last, skip}; }
+      const_iterator end() const {
+        if (skip == 1) {
+        }
+        return ConstSkippingIterator{target, last, skip};}
       /*
       whatever is necessary to make the slices copy-constructable.
       */
 
     private:
-      Matrix<T>& target;
+
+      T* target;
       int start;
       int skip;
       int last;
+      int length;
     };
     class ConstSkipView {
     public:
-      ConstSkipView(Matrix<T> t, int start, int skip, int l) : target(t) {
+      ConstSkipView(T* t, int start, int skip, int l, int length) : target(t) {
         this->start = start;
         this->skip = skip;
         this->last = l;
+        this->length = length;
       }
       /*
       an operator T& operator[](int i) that takes an index into the slice and returns a reference to the element at that index, or throws a std::out_of_range exception if the index is invalid;
@@ -110,20 +130,21 @@ namespace cs427527 {
       /*
       a method iterator begin() to return an iterator positioned at the beginning of the slice;
       */
-      const_iterator begin() const { return ConstSkippingIterator{target, last, skip};} 
+      const_iterator begin() const { return ConstSkippingIterator{target, start, skip};}
        /*
       a method iterator end() to return an iterator positioned past the last element in the slice;
       */
-      const_iterator end() const { return ConstSkippingIterator{target, last, skip};} 
+      const_iterator end() const { return ConstSkippingIterator{target, last, skip};}
       /*
       whatever is necessary to make the slices copy-constructable.
       */
 
     private:
-      Matrix<T>& target;
+      T* target;
       int start;
       int skip;
       int last;
+      int length;
     };
     using slice = SkipView;
     using const_slice = ConstSkipView;
@@ -134,10 +155,10 @@ namespace cs427527 {
     */
     slice operator[](int row);
     const_slice operator[](int row) const;
-    
+
     /*
-    a method slice column(int col) that takes a column index and returns a slice representing that column, or throws a std::out_of_range exception if the index is invalid; 
-    */ 
+    a method slice column(int col) that takes a column index and returns a slice representing that column, or throws a std::out_of_range exception if the index is invalid;
+    */
     slice column(int col);
     const_slice column(int col) const;
 
@@ -154,7 +175,7 @@ namespace cs427527 {
     /*
     A move constructor Matrix(const Matrix&& other) that runs in O(1) time.
     */
-    Matrix(const Matrix&& other);
+    Matrix(Matrix&& other);
 
     /*
     A copy assignment operator to create a deep copy of an object, assuming that the elements' copy constructor and assignment operator create deep copies of the elements..

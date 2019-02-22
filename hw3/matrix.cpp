@@ -10,21 +10,21 @@ namespace cs427527 {
     typename Matrix<T>::slice Matrix<T>::operator[](int row)
     {
       if (row > this->w || row < 0) {
-        throw std::out_of_range ("out_of_range");
+        throw std::out_of_range ("df");
       }
       int start = this->w * row;
-      int end = (this->w+1) * row;
-      return SkipView{*this, start, 1, end};
+      int end = (this->w) * (row+1);
+      return SkipView{this->elements, start, 1, end, this->w};
     }
     template<typename T>
     typename Matrix<T>::const_slice Matrix<T>::operator[](int row) const
     {
       if (row > this->w || row < 0) {
-        throw std::out_of_range ("out_of_range");
+        throw std::out_of_range ("sf");
       }
       int start = this->w * row;
-      int end = (this->w + 1) * row;
-      return ConstSkipView{*this, start, 1, end};
+      int end = (this->w) * (row+1);
+      return ConstSkipView{this->elements, start, 1, end, this->w};
     }
 
     /*
@@ -33,20 +33,20 @@ namespace cs427527 {
     template<typename T>
     typename Matrix<T>::slice Matrix<T>::column(int col) {
       if (col > this->w || col < 0) {
-        throw std::out_of_range ("out_of_range");
+        throw std::out_of_range ("af");
       }
-      int step = this.w;
-      int end = col + (this->w * (this->h-1));
-      return SkipView{*this, col, step, end};
+      int step = this->w;
+      int end = col + (this->w * (this->h));
+      return SkipView{this->elements, col, step, end, this->h};
     }
     template<typename T>
     typename Matrix<T>::const_slice Matrix<T>::column(int col) const {
       if (col > this->w || col < 0) {
-        throw std::out_of_range ("out_of_range");
+        throw std::out_of_range ("we");
       }
       int step = this->w;
-      int end = col + (this->w * (this->h-1));
-      return ConstSkipView{*this, col, step, end};
+      int end = col + (this->w * (this->h));
+      return ConstSkipView{this->elements, col, step, end, this->h};
     }
 
 
@@ -55,24 +55,24 @@ namespace cs427527 {
     */
     template<typename T>
     T& Matrix<T>::SkipView::operator[](int i) {
-      if (i > last ) {
-        throw std::out_of_range ("out of range");
+      if (i > length ) {
+        throw std::out_of_range ("out of fe");
       }
-      return target[start + skip + i];
+      return target[start + (skip*i)];
     }
     template<typename T>
     const T& Matrix<T>::SkipView::operator[](int i) const {
-      if (i > last ) {
-        throw std::out_of_range ("out of range");
+      if (i > length ) {
+        throw std::out_of_range ("out we range");
       }
-      return target[start + skip + i];
+      return target[start + (skip*i)];
     }
     template<typename T>
     const T& Matrix<T>::ConstSkipView::operator[](int i) const {
-      if (i > last ) {
-        throw std::out_of_range ("out of range");
+      if (i > length ) {
+        throw std::out_of_range ("as of range");
       }
-      return target[start + skip + i];
+      return target[start + (skip *i)];
     }
 
     /*
@@ -99,7 +99,7 @@ namespace cs427527 {
     /*
     A move constructor Matrix(const Matrix&& other) that runs in O(1) time.		*/
 		template<typename T>
-    Matrix<T>::Matrix(const Matrix&& other) {
+    Matrix<T>::Matrix(Matrix&& other) {
       move(other);
     }
 
@@ -137,6 +137,8 @@ namespace cs427527 {
     int Matrix<T>::width() const {
       return w;
     }
+    // getting location via 2d array
+
     /*
     A method T& at(int r, int c) that returns a reference to the element at the given location in the matrix, or throws a std::out_of_range exception if the row index or column index are invalid. There must also be a version of this method that works on const matrices, returning const references to the elements.
     */
@@ -160,6 +162,7 @@ namespace cs427527 {
     /*
     Copy constructor -- creating a deep copy
     */
+
     template<typename T>
     void Matrix<T>::copy(const Matrix& toCopy) {
       capacity = toCopy.capacity;

@@ -254,7 +254,7 @@ void testSlice1() {
 void testSlice2() {
 #ifdef SLICE
     auto m = makeMatrix(3, 4);
-    m.at(1, 3) = 20;
+    m.at(1, 3) = 33;
 
     auto middle = m[1];
     cout << "middle row, last column: " << middle[3] << endl;
@@ -266,9 +266,9 @@ void testSlice2() {
 void testSlice3() {
 #ifdef SLICE
     auto m = makeMatrix(3, 4);
-
     m.at(0, 0) = 99;
     m.at(1, 1) = 98;
+    printMatrix(m);
 
     cout << "PRINT USING SLICES" << endl;
     printMatrixSlices(m);
