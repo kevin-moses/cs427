@@ -1,0 +1,125 @@
+
+Final test script for SpinOut (02/25/2019)
+
+***** Checking for warning messages *****
+Making -B ./SpinOut
+g++ -Wall -pedantic -std=c++17 -g   -c -o spinout_run.o spinout_run.cpp
+g++ -Wall -pedantic -std=c++17 -g   -c -o spinout.o spinout.cpp
+g++ -Wall -pedantic -std=c++17 -g -o SpinOut spinout.o spinout_run.o
+***** Checking for warning messages *****
+Making -B Unit
+g++ -Wall -pedantic -std=c++17 -g   -c -o spinout_unit.o spinout_unit.cpp
+g++ -Wall -pedantic -std=c++17 -g   -c -o spinout.o spinout.cpp
+g++ -Wall -pedantic -std=c++17 -g -o Unit spinout_unit.o spinout.o
+
+Each test is either passed or failed; there is no partial credit.
+
+
+           Basic Execution (60 points)
+  1 point  001. interactive
+  1 point  002. interactive, first move illegal
+  1 point  003. interactive, last move illegal
+  1 point  004. interactive, input after illegal move
+  1 point  005. interactive, multiple illegal moves
+  1 point  006. interactive, solved
+  1 point  007. interactive, start state
+  1 point  008. interactive, start state, solved
+  1 point  009. interactive, empty input
+  1 point  010. interactive, moves after solved
+  1 point  011. non-interactive
+1c1
+< ///////
+---
+> run './SpinOut': segmentation fault
+Error: STDOUT differs from expected
+  0 point  012. non-interactive, empty input
+  1 point  013. non-interactive, illegal move
+  1 point  014. non-interactive, multiple illegal moves
+  1 point  015. non-interactive, solved
+  1 point  016. non-interactive, start state
+  1 point  017. non-interactive, start state, solved
+  1 point  018. non-interactive, moves go past solved
+  1 point  019. interactive mode, immediately solved
+
+           Basic Execution (60 points): 58 points
+
+           Invalid input (15 points)
+  1 point  020. interactive, multiple moves on line
+  1 point  021. interactive, move is not integer
+  1 point  022. too-long start state non-interactive
+  1 point  023. too-long start state interactive
+0a1
+> run './SpinOut ---': abort
+Error: STDOUT differs from expected
+  0 point  024. too-short start state non-interactive
+0a1
+> run './SpinOut -i ----': abort
+Error: STDOUT differs from expected
+  0 point  025. too-short start state interactive
+  1 point  026. illegal characters in start state non-interactive
+  1 point  027. illegal characters in start state interactive
+  1 point  028. 1st argument is not -i or start state
+  1 point  029. first move is non-integer non-interactive
+  1 point  030. last move is non-integer non-interactive
+  1 point  031. non-interactive, first move is non-number
+  1 point  032. non-interactive, last move is non-number
+  1 point  033. first move is non-integer interactive
+  1 point  034. last move is non-integer interactive
+  1 point  035. interactive, first move is non-number
+  1 point  036. interactive, last move is non-number
+  1 point  037. interactive, extra input on line
+  1 point  038. interactive, blank line
+  1 point  039. interactive, leading space
+
+           Invalid input (15 points): 13 points
+
+           Unit Tests (25 points)
+  1 point  040. default constructor
+  1 point  041. isSolved
+  1 point  042. totalMoves
+  1 point  043. isLegalMove(4)
+  1 point  044. isLegalMove(5)
+  1 point  045. isLegalMove(6)
+  1 point  046. makeMove
+  1 point  047. exception from isLegalMove -- isLegalMove(7)
+  1 point  048. isLegalMove(-1)
+  1 point  049. isLegalMove(1000000)
+  1 point  050. string constructor
+  1 point  051. string constructor with too-short value
+1c1
+< PASSED
+---
+> allowed construction with argument ///////////
+Error: STDOUT differs from expected
+  0 point  052. string constructor with too-long value
+  1 point  053. string constructor with invalid characters
+  1 point  054. isLegalMove on each position for starting configuration
+  1 point  055. isLegalMove on each position for some other configuration
+  1 point  056. makeMove for each legal move in starting position
+  1 point  057. makeMove for each legal move in some other configuration
+  1 point  058. totalMoves for default starting configuration
+  1 point  059. totalMoves for some other starting configuration
+  1 point  060. totalMoves for sequence of legal moves
+  1 point  061. isSolved for starting configuration
+  1 point  062. isSolved for other configuration
+  1 point  063. isSolved for solved configuration
+  1 point  064. isSovled for object moved into and then past solved configuration
+
+           Unit Tests (25 points): 24 points
+
+               Deductions for Violating Specification (0 => no violation)
+
+End of Public Script
+
+ 95 points Total for SpinOut
+
+           Possible Deductions (assessed later as appropriate)
+                -5 Does not make
+                -5 Makefile missing
+                -5 Makefile incorrect
+                -1 Log file incorrectly named
+                -1 Log file lacks estimated time
+                -1 Log file lacks total time
+                -1 Log file lacks statement of major difficulties
+                -1 Compilation errors using -Wall -std=c++17 -pedantic
+

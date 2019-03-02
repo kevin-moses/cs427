@@ -1,0 +1,15 @@
+ ESTIMATE of time to complete assignment: 6 hours
+
+      Time   	  Time
+Date  started 	spent 	Work completed
+----  -------  	---- 	 --------------
+2/12  8:00pm  	1:00  Read spec and looked up how to use/manipulate copy and move constructors and assignment operators
+2/13	1:30pm	  3:30	Fixed lagging namespace error, valgrind errors, done with matrix/matrixcopy
+2/21  1:00am    1:30  Late night working on Iterator and Slice
+2/21	3:00pm	  4:00	Office hours and discussion with classmates failing same test cases
+                ----
+              	10:00  TOTAL time spent
+
+            I discussed this assignment with: Vivek Katara, David Schwartz, Katherine Arackaparambil, ULA (Omar)
+
+Major Difficulties: The most difficult part of the pset was conceptual and was just figuring out where to start - that meant learning move/copy constructors and asssignment operators from the ground up. I realized early on if I use a 1-D array the vector template that Prof. Glenn demonstrated in class works remarkably well as a basis for our Matrix Code. Obviously it took a little bit of finesse to figure out the indices of slices and iterators in a matrix vs in a straightforward vector, but I found the hardest part was consistently dealing with pointers (relearning old CPSC223 lessons), dealing with const and nonconst values, and how to split up which objects get which private data members and member functions.
