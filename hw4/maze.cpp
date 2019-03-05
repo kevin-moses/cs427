@@ -3,29 +3,38 @@
 #include <algorithm>
 #include <iterator>
 #include <utility>
+#include <unordered_map>
 #include <queue>
-
+#include "maze.hpp"
 using std::string;
 using std::vector;
 using std::queue;
+using std::unordered_map;
 enum Direction {NORTH, EAST, SOUTH, WEST};
 
-namespace cs427_527 {
-	// maze constructor -- error handling of input handled by 
+namespace cs427_527{
+	// maze constructor -- error handling of input handled by
 	Maze::Maze(vector<string> input) {
 		width = input[0].size(); // length of first line
 		height = input.size();
 		entry = (2*width) + (2*height); // 2h+2w initial states
+		matrix.resize(height);
 		// put this all into the map
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				// add nodes
 				Space ins(i, j, input[i].at(j), 0);
-				matrix[i].at(j) = ins;
+				matrix[i].push_back(ins);
 			}
 		}
 	}
-	vector<Space> Maze::findNextNodes(curr) {
+	//overloading output operator
+	std::ostream& operator<<(std::ostream& os, Space s) {
+		os << '(' << s.row << ", " << s.col << ")";
+		return os;
+	}
+
+	vector<Space> Maze::findNextNodes(Space curr) {
 		vector<Space> nodes;
 		switch(curr.state) {
 			case 'S':
@@ -90,13 +99,14 @@ namespace cs427_527 {
 		return nodes;
 	}
 	//BFS implementation
-	vector<Space> Maze::bfs(Space start, Space target) {
+	vector<Space> Maze::bfs(Space first, int &dist) {
 		// set up queue and push root
-		vector<vector<bool>> visited(height, vector<bool>(width, false));
-		vector<Space> path;
-		path.push_back(start);
+		unordered_map<Space, Space> visited;
+		// initialize
 		queue<Space> open;
-		open.push(start);
+		open.push(first);
+		Space goal;
+		// vector<Space> pred(entry);
 
 		while (!open.empty()) {
 			Space curr = open.front();
@@ -104,17 +114,38 @@ namespace cs427_527 {
 			vector<Space> nextNodes = findNextNodes(curr);
 			for (int i = 0; i < nextNodes.size(); i++) {
 				// if reached end
-				if (nextNodes.at(i) == target) {
-					open.push();
-					// YOU ARE HERE
+				if (nextNodes[i].state == '*') {
+					goal = nextNodes[i];
+					break;
 				}
-
+				int r = nextNodes[i].row;
+				int c = nextNodes[i].col;
+				// if past bounds of maze, get out
+				if (r >= height || c >=  width || r == -1 || c == -1) {
+					continue;
+				}
+				// if unseen
+				if (!visited.contains(nextNodes[i])) {
+					visited.insert(nextNodes[i], curr);
+					open.push(nextNodes[i]);
+					dist++;
+				}
 			}
 		}
-
+		// traceback path
+		vector<Space> path;
+		int i = 0;
+		Space curr = goal;
+		while (i < dist) {
+			path.push_back(curr);
+			Space back = visited[curr];
+			back = curr;
+		}
+		return path;
 	}
 
-	Maze::shortestPath() {
+
+	vector<Space> Maze::shortestPath() {
 		//queue up "entry" number of ways to get into maze.
 		vector<Space> start;
 		// top row
@@ -125,7 +156,7 @@ namespace cs427_527 {
 		// bottom row facing up
 		for (int j = 0; j < width; j++) {
 			Space x(width, j, 'S', NORTH);
-			start.push_back(x);	
+			start.push_back(x);
 		}
 		// left row facing right
 		for (int i = 0; i < height; i++) {
@@ -146,12 +177,23 @@ namespace cs427_527 {
 				}
 			}
 		}
+		vector<Space> minPath;
+		int minDist = entry;
+		int dist;
+		Space minStart;
 		// run bfs for each target for each entry position
-		for(int k = 0; k < target.size(); k++) {
-			for (int i = 0; i < states; i++) {
-				bfs(start.at(i), target.at(k));
+		for (int i = 0; i < states; i++) {
+			dist = 0;
+			vector<Space> path = bfs(start.at(i), &dist);
+			if (dist < minDist) {
+				minStart = start[i];
+				dist = minDist;
+				minPath = path;
 			}
 		}
+		minPath.push_back(minStart);
+		std::reverse(minPath.begin, minPath.end);
+		return minPath;
 	}
 
 
