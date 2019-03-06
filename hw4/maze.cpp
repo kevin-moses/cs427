@@ -10,6 +10,7 @@ using std::string;
 using std::vector;
 using std::queue;
 using std::unordered_map;
+using std::hasher;
 enum Direction {NORTH, EAST, SOUTH, WEST};
 
 namespace cs427_527{
@@ -34,10 +35,10 @@ namespace cs427_527{
 		return os;
 	}
 
-	vector<Space> Maze::findNextNodes(Space curr) {
-		vector<Space> nodes;
+	void Maze::findNextNodes(Space curr, vector<Space> nodes, int &things) {
 		switch(curr.state) {
 			case 'S':
+				things = 1;
 				switch(curr.pos) {
 					case NORTH: nodes.push_back(matrix[curr.row-1][curr.col]);
 						break;
@@ -50,6 +51,7 @@ namespace cs427_527{
 				}
 				break;
 			case 'L':
+				things = 1;
 				switch(curr.pos) {
 					case NORTH: nodes.push_back(matrix[curr.row][curr.col-1]);
 						break;
@@ -62,6 +64,7 @@ namespace cs427_527{
 				}
 				break;
 			case 'R':
+				things = 1;
 				switch(curr.pos) {
 					case NORTH: nodes.push_back(matrix[curr.row][curr.col+1]);
 						break;
@@ -74,6 +77,7 @@ namespace cs427_527{
 				}
 				break;
 			case 'U':
+				things = 1;
 				switch(curr.pos) {
 					case NORTH: nodes.push_back(matrix[curr.row+1][curr.col]);
 						break;
@@ -86,115 +90,91 @@ namespace cs427_527{
 				}
 				break;
 			case '?':
+				things = 3;
 				nodes.push_back(matrix[curr.row+1][curr.col]);
 				nodes.push_back(matrix[curr.row-1][curr.col]);
 				nodes.push_back(matrix[curr.row][curr.col-1]);
 				nodes.push_back(matrix[curr.row][curr.col+1]);
 				break;
 			case 'X':
+				things = 0;
 				break;
 			case '*':
+				things = 0;
 				break;
 		}
-		return nodes;
+		return;
 	}
-	//BFS implementation
-	vector<Space> Maze::bfs(Space first, int &dist) {
-		// set up queue and push root
-		unordered_map<Space, Space> visited;
-		// initialize
-		queue<Space> open;
-		open.push(first);
-		Space goal;
-		// vector<Space> pred(entry);
 
-		while (!open.empty()) {
-			Space curr = open.front();
-			open.pop();
-			vector<Space> nextNodes = findNextNodes(curr);
-			for (int i = 0; i < nextNodes.size(); i++) {
-				// if reached end
-				if (nextNodes[i].state == '*') {
-					goal = nextNodes[i];
-					break;
-				}
-				int r = nextNodes[i].row;
-				int c = nextNodes[i].col;
-				// if past bounds of maze, get out
-				if (r >= height || c >=  width || r == -1 || c == -1) {
-					continue;
-				}
-				// if unseen
-				if (!visited.contains(nextNodes[i])) {
-					visited.insert(nextNodes[i], curr);
-					open.push(nextNodes[i]);
-					dist++;
-				}
+	// //hashing attempt
+	// std::size_t hashing(const Space &s) {
+	// 	return (37* std::hash<int>()(s.row) ^ std::hash<int>()(name.col));
+	// }
+
+	vector<Space> Maze::shortestPath() {
+	  //queue up "entry" number of ways to get into maze.
+	  queue<Space> open;
+	  unordered_map<Space, Space, hasher> visited;
+
+	  // top row
+	  for (int j = 0; j < width; j++) {
+	    Space x(-1, j, 'S', SOUTH);
+	    open.push(x);
+	  }
+	  // bottom row facing up
+	  for (int j = 0; j < width; j++) {
+	    Space x(width, j, 'S', NORTH);
+	    open.push(x);
+	  }
+	  // left row facing right
+	  for (int i = 0; i < height; i++) {
+	    Space x(i, -1, 'S', EAST);
+	    open.push(x);
+	  }
+	  // right row facing left
+	  for (int i = 0; i < height; i++) {
+	    Space x(i, height, 'S', WEST);
+	    open.push(x);
+	  }
+	  // actual bfs
+		Space start;
+	  while (!open.empty()) {
+	    Space curr = open.front();
+	    open.pop();
+			if (curr.state == '*') {
+				start = curr;
 			}
-		}
-		// traceback path
-		vector<Space> path;
-		int i = 0;
-		Space curr = goal;
-		while (i < dist) {
-			path.push_back(curr);
-			Space back = visited[curr];
-			back = curr;
-		}
+	    vector<Space> nextNodes;
+			int things = 0;
+	    findNextNodes(curr, nextNodes, things);
+	    for (int i = 0; i < things; i++) {
+	      Space next = nextNodes.at(i);
+	      int r = next.row;
+	      int c = next.col;
+	      // if past bounds of maze, get out
+	      if (r >= height || c >=  width || r == -1 || c == -1) {
+	        continue;
+	      }
+	      // if unseen
+	      if (!visited.count(next)) {
+	        visited.insert(next, curr);
+	        open.push(next);
+	      }
+	    }
+	  }
+	  // traceback path
+	  vector<Space> path;
+		Space curr = start;
+	  while (visited.count(curr) != 0) {
+	    path.push_back(curr);
+	    Space back = visited[curr];
+	    back = curr;
+	  }
 		return path;
 	}
 
 
-	vector<Space> Maze::shortestPath() {
-		//queue up "entry" number of ways to get into maze.
-		vector<Space> start;
-		// top row
-		for (int j = 0; j < width; j++) {
-			Space x(-1, j, 'S', SOUTH);
-			start.push_back(x);
-		}
-		// bottom row facing up
-		for (int j = 0; j < width; j++) {
-			Space x(width, j, 'S', NORTH);
-			start.push_back(x);
-		}
-		// left row facing right
-		for (int i = 0; i < height; i++) {
-			Space x(i, -1, 'S', EAST);
-			start.push_back(x);
-		}
-		// right row facing left
-		for (int i = 0; i < height; i++) {
-			Space x(i, height, 'S', WEST);
-			start.push_back(x);
-		}
-		// find targets - multiple targets can exist
-		vector<Space> target;
-		for (int i = 0; i < width; i++) {
-			for (int j = 0; j < height; j++) {
-				if (matrix[i].at(j).state == '*') {
-				 	target.push_back(matrix[i].at(j));
-				}
-			}
-		}
-		vector<Space> minPath;
-		int minDist = entry;
-		int dist;
-		Space minStart;
-		// run bfs for each target for each entry position
-		for (int i = 0; i < states; i++) {
-			dist = 0;
-			vector<Space> path = bfs(start.at(i), &dist);
-			if (dist < minDist) {
-				minStart = start[i];
-				dist = minDist;
-				minPath = path;
-			}
-		}
-		minPath.push_back(minStart);
-		std::reverse(minPath.begin, minPath.end);
-		return minPath;
-	}
+
 
 
 }

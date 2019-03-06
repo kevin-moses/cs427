@@ -9,12 +9,11 @@
 using std::string;
 using std::vector;
 using std::unordered_map;
-using std::pair;
-
 
 namespace cs427_527{
 	class Space {
 	public:
+		// comparison operator
 		Space() {
 			row = 0;
 			col = 0;
@@ -31,7 +30,14 @@ namespace cs427_527{
 		int col;
 		char state;
 		int pos;
+		 bool operator==(const Space &two) const {
+			return (row == two.row && col == two.col && state == two.state && pos == two.pos);
+		}
+		bool operator!=(const Space &two) const {
+			return !(*this==two);
+		}
 	};
+
 
 
 	// maze is a unordered map of Spaces
@@ -39,8 +45,8 @@ namespace cs427_527{
 	//constructor
 	public:
 		Maze(vector<string> input);
-		vector<Space> findNextNodes(Space curr);
-		vector<Space> bfs(Space path, int& dist);
+		void findNextNodes(Space curr, vector<Space> nextNodes, int &things);
+		// vector<Space> bfs(Space path, int& dist);
 		vector<Space> shortestPath();
 
 	private:
@@ -49,20 +55,20 @@ namespace cs427_527{
 		int height;
 		int entry; // initial states
 	};
+
+}
+
+
+namespace std {
 	//overloaded hash class
-	template<>
-	struct std::hash<Space, Space>
+	struct hasher
 	{
-	public:
-		size_t operator()(Space x, Space y) const
+		size_t operator()(const cs427_527::Space &x) const
 		{
-			size_t h;
-			size_t one = (size_t)x.state;
-			size_t two = (size_t)y.state;
-			h = 37*two*one;
-			return h;
+			return (37* hash<int>()(x.row) ^ hash<int>()(x.col));
 		}
 	};
+
 }
 
 
