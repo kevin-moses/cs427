@@ -29,34 +29,77 @@ namespace cs427_527{
 		return os;
 	}
 
-	void Maze::findNextNodes(pair<int, int> curr, vector<pair<int, int>> nodes, int &things) {
-		switch(matrix[curr.first][curr.second]) {
+	void Maze::findNextNodes(pair <pair<int, int>,pair<int, int>> curr, vector<pair <pair<int, int>,pair<int, int>> > nodes, int &things) {
+		int curr_r = curr.first.first;
+		int curr_c = curr.cirst.second;
+		int prev_r = curr.second.first;
+		int prev_c = curr.second.second;
+		int next_r;
+		int next_c;
+		switch(matrix[curr_r][curr_c]) {
 			case 'S':
 				things = 1;
-				switch(curr.pos) {
-					case NORTH: nodes.push_back(matrix[curr.row-1][curr.col]);
-						break;
-					case SOUTH: nodes.push_back(matrix[curr.row+1][curr.col]);
-						break;
-					case EAST: nodes.push_back(matrix[curr.row][curr.col+1]);
-						break;
-					case WEST: nodes.push_back(matrix[curr.row][curr.col-1]);
-						break;
+				// NORTH
+				if (curr_r < prev_r) {
+					next_r = curr_r -1;
+					next_c = curr_c;
+					nodes.push_back(make_pair (make_pair(next_r, next_c), make_pair(curr_r, curr_c)));
+					break;
+				}
+				// SOUTH
+				if (curr_r > prev_r) {
+					next_r = curr_r + 1;
+					next_c = curr_c;
+					nodes.push_back(make_pair (make_pair(next_r, next_c), make_pair(curr_r, curr_c)));
+					break;
+				}
+				// EAST
+				if (curr_c > prev_c) {
+					next_c = curr_c + 1;
+					next_r = curr_r;
+					nodes.push_back(make_pair (make_pair(next_r, next_c), make_pair(curr_r, curr_c)));
+					break;
+				}
+				// WEST
+				if (curr_c < prev_c) {
+					next_c = curr_c - 1;
+					next_r = curr_r;
+					nodes.push_back(make_pair (make_pair(next_r, next_c), make_pair(curr_r, curr_c)));
+					break;
 				}
 				break;
 			case 'L':
 				things = 1;
-				switch(curr.pos) {
-					case NORTH: nodes.push_back(matrix[curr.row][curr.col-1]);
-						break;
-					case SOUTH: nodes.push_back(matrix[curr.row][curr.col+1]);
-						break;
-					case EAST: nodes.push_back(matrix[curr.row-1][curr.col]);
-						break;
-					case WEST: nodes.push_back(matrix[curr.row+1][curr.col]);
-						break;
+				// NORTH
+				if (curr_r < prev_r) {
+					next_c = curr_c -1;
+					next_r = curr_r;
+					nodes.push_back(make_pair (make_pair(next_r, next_c), make_pair(curr_r, curr_c)));
+					break;
+				}
+				// SOUTH
+				if (curr_r > prev_r) {
+					next_c = curr_c + 1;
+					next_r = curr_r;
+					nodes.push_back(make_pair (make_pair(next_r, next_c), make_pair(curr_r, curr_c)));
+					break;
+				}
+				// EAST
+				if (curr_c > prev_c) {
+					next_r = curr_r -1;
+					next_c = curr_c;
+					nodes.push_back(make_pair (make_pair(next_r, next_c), make_pair(curr_r, curr_c)));
+					break;
+				}
+				// WEST
+				if (curr_c > prev_c) {
+					next_r = curr_r + 1;
+					next_c = curr_c;
+					nodes.push_back(make_pair (make_pair(next_r, next_c), make_pair(curr_r, curr_c)));
+					break;
 				}
 				break;
+				// YOU ARE HERE
 			case 'R':
 				things = 1;
 				switch(curr.pos) {
@@ -105,7 +148,7 @@ namespace cs427_527{
 	// 	return (37* std::hash<int>()(s.row) ^ std::hash<int>()(name.col));
 	// }
 
-	vector<Space> Maze::shortestPath() {
+	vector<pair<int, int>> Maze::shortestPath() {
 	  //queue up "entry" number of ways to get into maze.
 	  queue< pair< pair<int, int>, pair<int, int>>> open;
 	  unordered_map<pair<pair<int, int>, pair<int, int>>, pair<pair<int, int>, pair<int, int>>> visited;
@@ -145,13 +188,12 @@ namespace cs427_527{
 	  while (!open.empty()) {
 	    pair<pair<int, int>, pair<int, int>> curr = open.front();
 			//find out what the direction is pointing at for base cases
-			Direction dir;
 			if (curr.first )
 	    open.pop();
 			if (matrix[curr.first][curr.second] == '*') {
 				start = curr;
 			}
-	    vector<pair<int, int>> nextNodes;
+	    vector<pair <pair<int, int>,pair<int, int>> > nextNodes;
 			int things = 0;
 	    findNextNodes(curr, nextNodes, things);
 	    for (int i = 0; i < things; i++) {
