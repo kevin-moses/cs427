@@ -5,39 +5,41 @@
 #include <algorithm>
 #include <iterator>
 #include <utility>
+#include <unordered_map>
 
 using std::string;
 using std::vector;
 using std::unordered_map;
 
 namespace cs427_527{
-	class Space {
-	public:
-		// comparison operator
-		Space() {
-			row = 0;
-			col = 0;
-			state = 'S';
-			pos = 0;
-		}
-		Space(int r, int c, char s, int p) {
-			row = s;
-			col = c;
-			state = s;
-			pos = p;
-		}
-		int row;
-		int col;
-		char state;
-		int pos;
-		 bool operator==(const Space &two) const {
-			return (row == two.row && col == two.col && state == two.state && pos == two.pos);
-		}
-		bool operator!=(const Space &two) const {
-			return !(*this==two);
-		}
-	};
+	// class Space {
+	// public:
+	// 	// comparison operator
+	// 	Space() {
+	// 		row = 0;
+	// 		col = 0;
+	// 		state = 'S';
+	// 		pos = 0;
+	// 	}
+	// 	Space(int r, int c, char s, int p) {
+	// 		row = s;
+	// 		col = c;
+	// 		state = s;
+	// 		pos = p;
+	// 	}
+	// 	int row;
+	// 	int col;
+	// 	char state;
+	// 	int pos;
+	// 	bool operator==(const Space &two) const {
+	// 		return (row == two.row && col == two.col && state == two.state && pos == two.pos);
+	// 	}
+	// 	bool operator!=(const Space &two) const {
+	// 		return !(*this==two);
+	// 	}
+	// };
 
+	std::ostream& operator<<(std::ostream& os, Space s);
 
 
 	// maze is a unordered map of Spaces
@@ -45,23 +47,35 @@ namespace cs427_527{
 	//constructor
 	public:
 		Maze(vector<string> input);
-		void findNextNodes(Space curr, vector<Space> nextNodes, int &things);
+		void findNextNodes(pair<int, int> curr, vector<pair<int, int>> nextNodes, int &things);
 		// vector<Space> bfs(Space path, int& dist);
-		vector<Space> shortestPath();
+		vector<pair<int, int>> shortestPath();
 
 	private:
-		vector<vector<Space>> matrix;
+		vector<string> matrix;
 		int width;
 		int height;
 		int entry; // initial states
 	};
 
 }
-
+namespace std
+{
+  template<>
+  class hash< pair< int, int > >
+  {
+  public:
+    size_t operator()(const pair< int, int >& p) const
+    {
+      return p.first + p.second;
+    }
+  };
+}
 
 namespace std {
 	//overloaded hash class
-	struct hasher
+	template<>
+	struct hasher<class Space>
 	{
 		size_t operator()(const cs427_527::Space &x) const
 		{
