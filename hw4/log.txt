@@ -1,15 +1,15 @@
  ESTIMATE of time to complete assignment: 6 hours
 
-      Time   	  Time
-Date  started 	spent 	Work completed
-----  -------  	---- 	 --------------
-2/12  8:00pm  	1:00  Read spec and looked up how to use/manipulate copy and move constructors and assignment operators
-2/13	1:30pm	  3:30	Fixed lagging namespace error, valgrind errors, done with matrix/matrixcopy
-2/21  1:00am    1:30  Late night working on Iterator and Slice
-2/21	3:00pm	  4:00	Office hours and discussion with classmates failing same test cases
+     	Time   	Time
+Date 	started spent 	Work completed
+----  	-------  -----	--------------
+3/1  	8:00pm 	3:00  	Read spec and got most of the code down
+3/5		1:30pm	2:30	Errors for hash function, queue, user defined types
+3/6  	2:00pm  3:30 	Iterators for user-defined Space/Vertex not working, using pair instead
+3/7		3:00pm	0:45	Finished pair reimplimentation and passed all test cases! Hard to think of private test cases
                 ----
-              	10:00  TOTAL time spent
+              	9:45  TOTAL time spent
 
-            I discussed this assignment with: Vivek Katara, David Schwartz, Katherine Arackaparambil, ULA (Omar)
+            I discussed this assignment with: Vivek Katara, David Schwartz, Katherine Arackaparambil, ULA (Vishnu), Noah Ritz
 
-Major Difficulties: The most difficult part of the pset was conceptual and was just figuring out where to start - that meant learning move/copy constructors and asssignment operators from the ground up. I realized early on if I use a 1-D array the vector template that Prof. Glenn demonstrated in class works remarkably well as a basis for our Matrix Code. Obviously it took a little bit of finesse to figure out the indices of slices and iterators in a matrix vs in a straightforward vector, but I found the hardest part was consistently dealing with pointers (relearning old CPSC223 lessons), dealing with const and nonconst values, and how to split up which objects get which private data members and member functions.
+Major Difficulties: I ended up scrapping a good deal of my code for a simpler implementation (more verbose) with stl::pair. I tried to create a user defined class for vertex (a maze being composed of vertices with direction, state, col/row) but after struggling to iterate through a vector of those types as well as getting my hash table to accept a user-defined type, I accepted Vishnu's suggestion of using std::pair to store most of the information. One bonus is that I get more exposure to stl containers, another being that other stl types like queues and unordered maps play well with the pair container. Vivek also clued me into using two Vertices as a key and two Vertices as a value for the hash table in order to trace back my path with BFS. Without that, I couldn't have guaranteed my solution was a unique one. 

@@ -7,7 +7,6 @@
 #include <functional>
 
 #include <utility>
-
 namespace cs427_527
 {
 
