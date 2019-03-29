@@ -1,5 +1,6 @@
 #include "factory.cpp"
 #include <vector>
+#include <memory>
 using std::string;
 using std::vector;
 using std::string;
@@ -10,13 +11,8 @@ using std::shared_ptr;
 namespace cs427_527 {
 
   // Scoring mechanism for aces, deuces, treys.. in upper bracket of standard Yahtzee
-  int UpperComb::getScore(vector<int> roll) {
-    int count = 0;
-    for (int i = 0; i < roll.size(); i++) {
-      if (roll[i] == target) {
-        count++;
-      }
-    }
+  int UpperComb::getScore(DiceRoll roll) {
+    int count = roll.count(target);
     return (count * target);
   }
   // Helper method for 3K-5K
@@ -28,70 +24,70 @@ namespace cs427_527 {
     return size;
   }
   // Scoring method for 3K-5K
-  int LowerComb::getScore(vector<int> roll) {
-    std::sort(roll.begin(), roll.end());
-    for (int i = 0; i < roll.size(); i++) {
-      int attempt = roll[i];
-      int count = 0;
-      for (int j = i; j < roll.size(); j++) {
-        if (roll[j]  == attempt) {
-          count++;
-        }
-        if (count == target){
-          return sumDice(roll);
+  int LowerComb::getScore(Diceroll roll) {
+    // find highest dicecount of 3K-5K
+    int num = 0;
+    for (int i = 1; i < 7; i++) {
+      int count = roll.count(i);
+      if (count >= target) {
+        num = i;
+      }
+    }
+    if (num != 0) {
+      return dice.total();
+    }
+    return 0;
+  }
+  int YahtzeeKind::getScore(DiceRoll roll) {
+    if (roll.allSame()) {
+      return score;
+    }
+    return 0;
+  }
+
+  // just throw whatever in fam
+  int Chance::getScore(DiceRoll roll) {
+    return roll.total();
+  }
+
+  // a little different from every other class
+  int FullHouse::getScore(Diceroll roll) {
+    int num1 = 3;
+    int num2 = 2;
+    for (int i = 1; i < 7; i++) {
+      if (roll.count(i) == num1) {
+        for (int j = 1; j < 7; j++) {
+          if (roll.count(j) == num2) {
+            return score;
+          }
         }
       }
     }
     return 0;
   }
-  // just throw whatever in fam
-  int Chance::getScore(vector<int> roll) {
-    return sumDice(roll);
-  }
-  // a little different from every other class
-  int FullHouse::getScore(vector<int> roll) {
-    // check that there's a 3K
-    std::sort(roll.begin(), roll.end());
-    while (i < 3) {
-      if (roll[i+1] == roll[i] && roll[i+2] == roll[i]) {
-        // case 1: lower full house, check upper pair
-        if (i == 0) {
-          if (roll[3] == roll[4]) {
-            return 25;
-          }
-        }
-        // case 2: upper full house, check lower pair
-        if (i == 2) {
-          if (roll[0] == roll[1]) {
-            return 25;
-          }
-        }
-      }
-    return 0;
-  }
   // scoring method for large, small straights
-  int Straight::getScore(vector<int> roll) {
-    std::sort(roll.begin(), roll.end());
-    int sequence = 0;
-    for (int i = 0; i < roll.size(); i++) {
+  int Straight::getScore(DiceRoll roll) {
+    // check it two times for small straight, only once for small roll
+    for (int i = 1; i < 8-target; i++) {
       vector<int> straight;
-      straight.push_back(roll[i]);
-      for (int j = i; j < roll.size(); j++) {
-        if (roll[j] - straight.back() == 1) {
-          straight.push_back(roll[j]);
+      for (int j = i; j < i+target; j++){
+        if (roll.count(j) == 0) {
+          break;
+        } else {
+          straight.push_back(j);
         }
       }
-      if (straight.size() == target) {
+      if (j.size() == target) {
         return score;
       }
     }
     return 0;
   }
 
-  int UpperBonus::getBonus(vector<Rule> scores, int bIndex) {
+  int UpperBonus::getBonus(vector<int> scorenum, int bIndex) {
     int sum = 0;
     for (int i = 0; i < bIndex; i++) {
-      sum+=scores[i];
+      sum+=scorenum[i];
     }
     if (sum >= total) {
       return award;

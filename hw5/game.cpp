@@ -65,7 +65,7 @@ int main(int argc, char **argv)
 
   // rolls and random if last argument is not -derandomize
   bool randomize = (string{"-derandomize"} != argv[argc - 1]);
-  
+
 #ifndef CPSC527
   // get a blank scoresheet
   Scoresheet sheet = game.initialSheet();
@@ -98,7 +98,7 @@ int main(int argc, char **argv)
 	      return 1;
 	    }
 	}
-      
+
       // print the scoresheet
       cout << sheet << endl;
 
@@ -163,7 +163,7 @@ int main(int argc, char **argv)
 	{
 	  return 1;
 	}
-      
+
       // mark score
       game.scoreRoll(roll, cat, sheet);
     }
@@ -176,7 +176,7 @@ int main(int argc, char **argv)
     {
       string dice;
       getline(cin, dice);
-      
+
       if (cin)
 	{
 	  try
@@ -198,7 +198,7 @@ int main(int argc, char **argv)
   while (!state.isTerminal())
     {
       cout << state;
-      
+
       string choice;
       bool valid = false;
       do
@@ -215,13 +215,13 @@ int main(int argc, char **argv)
 		{
 		  // score roll in chosen category
 		  state.scoreRoll(choice);
-		  
+
 		  // set up start of next turn
 		  if (!randomize && !state.isTerminal())
 		    {
 		      string dice;
 		      getline(cin, dice);
-		      
+
 		      if (cin)
 			{
 			  try
@@ -244,7 +244,7 @@ int main(int argc, char **argv)
 	      else
 		{
 		  state.reroll(choice);
-		  
+
 		  if (!randomize)
 		    {
 		      string rerolled;
@@ -295,7 +295,7 @@ void test_scoring(const YahtzeeGame& game)
     {
       // make the roll (throws an exception if invalid)
       DiceRoll roll{dice};
-      
+
       // get and display unused categories
       vector<string> options = sheet.unusedCategories();
 
@@ -310,7 +310,7 @@ void test_scoring(const YahtzeeGame& game)
 	{
 	  throw std::logic_error{"missing category input"};
 	}
-      
+
       // mark score
       game.scoreRoll(roll, cat, sheet);
     }
@@ -320,11 +320,11 @@ void test_scoring(const YahtzeeGame& game)
 #else
   YahtzeeState state = game.initialState();
   string dice;
-  
+
   while (!state.isTerminal() && cin >> dice)
     {
       state.setRoll(dice);
-      
+
       string cat;
       cin >> cat;
       if (!cin)
@@ -336,4 +336,3 @@ void test_scoring(const YahtzeeGame& game)
   cout << state << endl;
 #endif
 }
-
