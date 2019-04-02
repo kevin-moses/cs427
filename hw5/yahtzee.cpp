@@ -1,11 +1,12 @@
-#include <iostream>
+#include "yahtzee.hpp"
 
+#include <iostream>
 #include <vector>
 #include <bitset>
 #include <string>
 
 #include "diceroll.hpp"
-#include "yahtzee.hpp"
+#include "rule.hpp"
 
 using std::vector;
 using std::bitset;
@@ -13,7 +14,6 @@ using std::string;
 using std::cout;
 using std::endl;
 using std::shared_ptr;
-
 
 namespace cs427_527
 {
@@ -37,7 +37,7 @@ namespace cs427_527
 		}
 		return abbrevs;
 	}
-	YahtzeeGame::scoreroll(Diceroll roll, string cat, Scoresheet sheet){
+	void YahtzeeGame::scoreroll(DiceRoll roll, string cat, Scoresheet sheet){
 		int rulenum = 0;
 		// find which rule it corresponds to
 		for (int i = 0; i < options; i++) {
