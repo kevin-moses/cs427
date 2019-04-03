@@ -18,18 +18,26 @@ using std::shared_ptr;
 namespace cs427_527 {
 
   // name + abbreviation
-  class Rule {
+
+  class IRule{
+  public:
+    virtual ~IRule() {}
     virtual int getScore(DiceRoll roll) = 0;
-  protected:
+  };
+  class Rule : public IRule{
+  public:
+    ~Rule() {}
     string name;
     string abbrev;
   };
   class UpperComb : public Rule {
+  public:
     int getScore(DiceRoll roll) override;
   protected:
     int target;
   };
   class Ace : public UpperComb {
+  public:
     Ace(){
       target = 1;
       name = "Aces";
@@ -37,6 +45,7 @@ namespace cs427_527 {
     }
   };
   class Deuce : public UpperComb {
+  public:
     Deuce() {
 
     target = 2;
@@ -45,6 +54,8 @@ namespace cs427_527 {
     }
   };
   class Trey : public UpperComb {
+  public:
+
     Trey() {
 
     name = "Treys";
@@ -53,6 +64,7 @@ namespace cs427_527 {
     }
   };
   class Four : public UpperComb {
+  public:
     Four() {
 
     target = 4;
@@ -61,6 +73,7 @@ namespace cs427_527 {
     }
   };
   class Five : public UpperComb {
+  public:
     Five() {
 
     target = 5;
@@ -69,21 +82,24 @@ namespace cs427_527 {
     }
   };
   class Six : public UpperComb {
+  public:
     Six(){
 
     target = 6;
-    name = "Fives";
+    name = "Sixes";
     abbrev = "6";
     }
   };
 
   // change to make a single method
   class LowerComb: public Rule {
+  public:
     int getScore(DiceRoll roll) override;
   protected:
     int target;
   };
   class ThreeKind : public LowerComb {
+  public:
     ThreeKind(){
       name = "Three of a Kind";
       abbrev = "3K";
@@ -91,6 +107,7 @@ namespace cs427_527 {
     }
   };
   class FourKind : public LowerComb {
+  public:
     FourKind() {
       name = "Four of a Kind";
       abbrev = "4K";
@@ -98,6 +115,7 @@ namespace cs427_527 {
     }
   };
   class YahtzeeKind : public Rule {
+  public:
     int getScore(DiceRoll roll) override;
     YahtzeeKind() {
       name = "Yahtzee";
@@ -106,6 +124,7 @@ namespace cs427_527 {
     int score = 50;
   };
   class FullHouse : public Rule {
+  public:
     int getScore(DiceRoll roll) override;
     FullHouse() {
       name = "Full House";
@@ -115,12 +134,14 @@ namespace cs427_527 {
   };
 
   class Straight: public Rule {
+  public:
     int getScore(DiceRoll roll) override;
   protected:
     int target;
     int score;
   };
   class SmallStraight: public Straight {
+  public:
     SmallStraight() {
       target = 4;
       score = 30;
@@ -129,6 +150,7 @@ namespace cs427_527 {
     }
   };
   class LargeStraight: public Straight {
+  public:
     LargeStraight() {
       target = 5;
       score = 40;
@@ -137,6 +159,7 @@ namespace cs427_527 {
     }
   };
   class Chance: public Rule{
+  public:
     int getScore(DiceRoll roll) override;
     Chance(){
       name = "Chance";
@@ -144,9 +167,11 @@ namespace cs427_527 {
     }
   };
   class UpperBonus: public Rule {
+  public:
+    int getScore(DiceRoll roll) override {return 0;}
     int getBonus(vector<int> scorenum, int bIndex);
     UpperBonus() {
-      name = "Upper Bonus";
+      name = "UPPER BONUS";
     }
     int target = 63;
     int score = 53;

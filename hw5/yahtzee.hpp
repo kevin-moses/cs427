@@ -16,12 +16,12 @@ using std::string;
 using std::shared_ptr;
 namespace cs427_527
 {
-
+  class YahtzeeState;
 // use scoresheet instead of YahtzeeState
   class Scoresheet {
+  public:
     Scoresheet(int options, vector<int> scores, vector<shared_ptr<Rule>> rules, int ub_index);
     vector<string> unusedCategories();
-  private:
     int options;
     vector<int> scorenum;
     vector<shared_ptr<Rule>> rules;
@@ -34,13 +34,10 @@ namespace cs427_527
   class YahtzeeGame {
   public:
     YahtzeeGame(int options, vector<int> scores, vector<shared_ptr<Rule>> rules, int ub_index);
-    Scoresheet initialSheet();
-    bool isTerminal(Scoresheet sheet);
-    void scoreroll(DiceRoll roll, string cat, Scoresheet sheet);
+    Scoresheet initialSheet() const;
+    bool isTerminal(Scoresheet sheet) const;
+    void scoreRoll(DiceRoll roll, string cat, Scoresheet& sheet) const;
 
-  private:
-    const int maxTurns = 3;
-    int turn;
     int options;
     vector<int> scorenum;
     vector<shared_ptr<Rule>> rules;

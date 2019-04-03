@@ -25,14 +25,14 @@ namespace cs427_527
   class YahtzeeFactory
   {
   public:
-    virtual YahtzeeGame makeGame();
+    virtual ~YahtzeeFactory() {};
+    virtual YahtzeeGame makeGame() = 0;
   };
   class BasicYahtzeeFactory : public YahtzeeFactory{
-  	YahtzeeGame makeGame();
-
+  	YahtzeeGame makeGame() override;
   };
-  class MysteryYahtzeeeFactory : public YahtzeeFactory {
-    YahtzeeGame makeGame();
+  class MysteryYahtzeeFactory : public YahtzeeFactory {
+    YahtzeeGame makeGame() override;
   };
 
 }

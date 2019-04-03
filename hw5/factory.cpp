@@ -5,7 +5,7 @@
 
 #include "diceroll.hpp"
 #include "yahtzee.hpp"
-#include "rule.cpp"
+#include "rule.hpp"
 
 using std::string;
 using std::vector;
@@ -20,7 +20,7 @@ namespace cs427_527 {
   	// make array of options
   	const int options = 14;
   	vector<int> scores;
-    vector<Rule> rules;
+    vector<shared_ptr<Rule>> rules;
     const int ub_index = 6;
 
     // Fill vector of rules
@@ -48,10 +48,10 @@ namespace cs427_527 {
     rules.push_back(ss);
     auto ls = make_shared<LargeStraight>();
     rules.push_back(ls);
-    auto yh = make_shared<FiveKind>();
-    rules.push_back(yh);
     auto ch = make_shared<Chance>();
     rules.push_back(ch);
+    auto yh = make_shared<YahtzeeKind>();
+    rules.push_back(yh);
     // initialize scores to 0
     for (int i = 0; i < options; i++) {
       scores.push_back(0);
@@ -63,11 +63,11 @@ namespace cs427_527 {
 
 
 
-  YahtzeeGame MysteryYahtzeeFactory::makeGame() override {
+  YahtzeeGame MysteryYahtzeeFactory::makeGame()  {
       	// make array of options
   	const int options = 14;
   	vector<int> scores;
-    vector<Rule> rules;
+    vector<shared_ptr<Rule>> rules;
     const int ub_index = 6;
 
     // Fill vector of rules
@@ -95,10 +95,10 @@ namespace cs427_527 {
     rules.push_back(ss);
     auto ls = make_shared<LargeStraight>();
     rules.push_back(ls);
-    auto yh = make_shared<FiveKind>();
-    rules.push_back(yh);
     auto ch = make_shared<Chance>();
     rules.push_back(ch);
+    auto yh = make_shared<YahtzeeKind>();
+    rules.push_back(yh);
     // initialize scores to 0
     for (int i = 0; i < options; i++) {
       scores.push_back(0);

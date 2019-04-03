@@ -74,7 +74,7 @@ namespace cs427_527 {
           straight.push_back(j);
         }
       }
-      if (straight.size() == target) {
+      if (straight.size() == size_t(target)) {
         return score;
       }
     }

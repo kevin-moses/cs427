@@ -23,6 +23,13 @@ namespace cs427_527
     DiceRoll();
 
     /**
+     * Creates a roll with the given numbers showing on each die.
+     *
+     * @param s a string of NUM_DICE digts from 1 to NUM_SIDES
+     */
+    DiceRoll(const string& s);
+    
+    /**
      * Determines if all dice in this roll are showing the same number.
      *
      * @return true if and only if all dice are showing the same number.
@@ -57,6 +64,17 @@ namespace cs427_527
      * of the dice in this roll
      */
     void reroll(const std::string& keep);
+
+    /**
+     * Rerolls all the dice in this roll except the ones showing the
+     * digits in the given string.
+     *
+     * @param keep a string representing the numbers showing on a subset
+     * of the dice in this roll
+     * @param rolled a string of digits from 1 to NUM_SIDES of length
+     * equal to NUM_DICE minus the length of keep
+     */
+    void reroll(const std::string& keep, const std::string& rolled);
 
     /**
      * Determines if the given string represents the numbers showing on
