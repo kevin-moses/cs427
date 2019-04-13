@@ -1,0 +1,57 @@
+DO NOT SHARE THIS WITH STUDENTS WHO HAVE NOT INDICATED TO US THAT THEY
+ARE FINISHED WITH ASSIGNMENT #5.  WE COULD CONSIDER SUCH SHARING TO BE
+A VIOLATION OF ACADEMIC HONESTY.
+
+Welcome to Yortzee!
+
+Yortzee is played like Yahtzee, but with a different collection of categories
+and bonuses.  The categories and their abbreviations are: Aces (1),
+Deuces (2), Treys (3), Fours (4), Fives (5), Sixes (6), Two Pair (2P),
+Three of a Kind (3X), Four of a Kind (4X), Full House (FH), Low Straight (LS),
+High Straight (HS), Yatzie (Y), Chance (C), and Yortzee (Z).
+
+Basic scoring rules for Aces through Sixes, Three of a Kind, Four of a
+Kind, Full House, and Chance are the same as for Yahtzee.  Two pair
+scores the sum of the dice if two dice show the same number x and two
+other dice show the same number y and 0 otherwise (it may be that x =
+y, and the choice of four dice need not be unique, so four of a kind,
+five of a kind, and full house all count as two pair).  Low straight
+scores 25 points for 12345 in any order and 0 otherwise; high straight
+scores 30 points for 23456 in any order and 0 otherwise.  Yatzie
+scores 30 plus the sum of the dice for five of a kind and 0 otherwise.
+Yortzee scores 15 points if all 5 dice are different (which includes
+straights) and 0 otherwise.
+
+There are two types of bonuses.  Like Yahtzee, Yortzee awards an
+upper bonus for high subtotals in Aces through Sixes.  The upper bonus
+is tiered: 15 points for 42-62; 35 points for 63-83; 55 points for 84-104;
+and 75 points for 105.
+
+There is also a bonus after scoring a non-zero value in Yortzee for
+subsequent Yortzees used in other categories: if the Yortzee earns
+a non-zero score in the chosen category then the bonus is awarded.
+The bonuses grow progressively higher: the first bonus is 5 points,
+the second is 10 points, the third is 15 points, and so on (so three
+bonus Yortzees earn a total bonus of 5 + 10 + 15 = 30).
+
+The scoresheets should be output in the following format:
+
+     Aces
+     Deuces
+     Treys
+   4 Fours
+     Fives
+     Sixes
+   0 UPPER BONUS
+     Two Pair
+     Three of a Kind
+     Four of a Kind
+     Full House
+  25 Low Straight
+   0 High Straight
+     Yatzie
+  20 Chance
+  16 Yortzee
+  30 YORTZEE BONUS
+  95 GRAND TOTAL
+

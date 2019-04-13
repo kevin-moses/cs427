@@ -1,0 +1,13 @@
+ ESTIMATE of time to complete assignment: 5 hours
+
+     	Time   	Time
+Date 	started spent 	Work completed
+----  	-------  -----	--------------
+4/9  	6:00pm 	2:00  	Read spec and worked on new Rule Classes 
+4/10	7:30am	1:00	Scoring error from 3k->3x, 4k ->4x (25 test cases -> 84 test cases passed --> 143 test cases passed!)
+                ----
+              	3:00  TOTAL time spent
+
+            I discussed this assignment with: No one
+
+Major Difficulties: Trying not to remove any of my old code
