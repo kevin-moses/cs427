@@ -1,0 +1,12 @@
+ ESTIMATE of time to complete assignment: 5 hours
+
+     	Time   	Time
+Date 	started spent 	Work completed
+----  	-------  -----	--------------
+4/16  	11:00am  0:50  	Read spec and finished part 1 and 2 (test cases 1-4 i believe)
+                ----
+              	0:50  TOTAL time spent
+
+            I discussed this assignment with: Vivek Katara
+
+Major Difficulties: None so far
